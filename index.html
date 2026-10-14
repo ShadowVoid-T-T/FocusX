@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusX — Focus Better. Achieve More.</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar / Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                </div>
+                <h2>FocusX</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-target="dashboard">
+                    <i class="fa-solid fa-house"></i> Dashboard
+                </a>
+                <a href="#timer" class="nav-item" data-target="timer">
+                    <i class="fa-solid fa-clock"></i> Focus Timer
+                </a>
+                <a href="#statistics" class="nav-item" data-target="statistics">
+                    <i class="fa-solid fa-chart-pie"></i> Statistics
+                </a>
+                <a href="#settings" class="nav-item" data-target="settings">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Theme">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span id="themeText">Dark Mode</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Bar / Mobile Header -->
+            <header class="topbar">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="user-greeting">
+                    <h1 id="greetingTitle">Ready to focus?</h1>
+                    <p id="currentDateDisplay">Loading date...</p>
+                </div>
+                <div class="topbar-right">
+                    <div class="daily-streak-badge">
+                        <i class="fa-solid fa-fire"></i> <span id="streakCount">0</span> Streak
+                    </div>
+                </div>
+            </header>
+
+            <!-- SECTION: Dashboard -->
+            <section id="dashboard" class="content-section active">
+                <!-- Hero Greeting Banner -->
+                <div class="hero-banner">
+                    <div class="hero-text">
+                        <h2>Small sessions. Big achievements.</h2>
+                        <blockquote id="motivationalQuote">"Focus is a matter of deciding what things you're not going to do."</blockquote>
+                    </div>
+                    <div class="hero-progress-card">
+                        <span>Today's Goal Progress</span>
+                        <div class="hero-progress-bar-container">
+                            <div class="hero-progress-bar" id="heroProgressBar"></div>
+                        </div>
+                        <span id="heroProgressText">0 / 120 mins</span>
+                    </div>
+                </div>
+
+                <!-- Quick Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statTotalTime">0m</h3>
+                            <p>Total Focus Time</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon cyan"><i class="fa-solid fa-check-circle"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statSessionsCount">0</h3>
+                            <p>Completed Sessions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fa-solid fa-bullseye"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statGoalProgress">0%</h3>
+                            <p>Daily Goal</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="stat-info">
+                            <h3 id="statLongestSession">0m</h3>
+                            <p>Longest Session</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid: Tasks & Mini Timer shortcut -->
+                <div class="dashboard-grid">
+                    <!-- Task Planner Widget -->
+                    <div class="card task-widget-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-list-check"></i> Today's Study Planner</h3>
+                            <span id="taskCounterBadge">0 pending</span>
+                        </div>
+                        <form id="taskForm" class="task-form">
+                            <input type="text" id="taskTitleInput" placeholder="What are you studying today?" required autocomplete="off">
+                            <input type="text" id="taskSubjectInput" placeholder="Subject (e.g., Math)" autocomplete="off">
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Task</button>
+                        </form>
+                        <div class="task-list-container">
+                            <ul id="taskList" class="task-list">
+                                <!-- Populated dynamically -->
+                            </ul>
+                            <div id="taskEmptyState" class="empty-state">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                                <p>No tasks for today. Add one above to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Focus Ambience Widget -->
+                    <div class="card ambience-card">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-headphones"></i> Focus Ambience</h3>
+                            <span class="badge">Optional Audio</span>
+                        </div>
+                        <p class="section-desc">Immerse yourself with background sounds. (Requires external browser audio support)</p>
+                        <div class="ambience-grid">
+                            <button class="ambience-btn" data-sound="rain">
+                                <i class="fa-solid fa-cloud-rain"></i>
+                                <span>Rain</span>
+                            </button>
+                            <button class="ambience-btn" data-sound="forest">
+                                <i class="fa-solid fa-树"></i>
+                                <span>Forest</span>
+                            </button>
+                            <button class="ambience-btn" data-sound="whitenoise">
+                                <i class="fa-solid fa-wind"></i>
+                                <span>White Noise</span>
+                            </button>
+                            <button class="ambience-btn active" data-sound="none">
+                                <i class="fa-solid fa-volume-xmark"></i>
+                                <span>No Sound</span>
+                            </button>
+                        </div>
+                        <div class="volume-control-container" id="volumeContainer" style="display: none;">
+                            <label for="volumeSlider"><i class="fa-solid fa-volume-high"></i> Volume</label>
+                            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Focus Timer -->
+            <section id="timer" class="content-section">
+                <div class="timer-container-wrapper">
+                    <!-- Mode Selector Buttons -->
+                    <div class="timer-modes">
+                        <button class="mode-btn active" data-mode="focus">Focus Session</button>
+                        <button class="mode-btn" data-mode="shortBreak">Short Break</button>
+                        <button class="mode-btn" data-mode="longBreak">Long Break</button>
+                    </div>
+
+                    <!-- Circular Countdown Ring -->
+                    <div class="timer-display-card">
+                        <div class="circular-timer">
+                            <svg class="progress-ring" width="280" height="280">
+                                <circle class="progress-ring__circle-bg" cx="140" cy="140" r="125"></circle>
+                                <circle class="progress-ring__circle" id="progressRing" cx="140" cy="140" r="125"></circle>
+                            </svg>
+                            <div class="timer-inner-content">
+                                <span id="currentSessionLabel" class="session-label-tag">Focus</span>
+                                <div id="timerDisplay" class="countdown-time">25:00</div>
+                                <div id="timerSubtext" class="timer-subtext">Ready when you are</div>
+                            </div>
+                        </div>
+
+                        <!-- Timer Controls -->
+                        <div class="timer-controls">
+                            <button id="startPauseBtn" class="btn-timer-action primary">
+                                <i class="fa-solid fa-play" id="startPauseIcon"></i> <span id="startPauseText">Start</span>
+                            </button>
+                            <button id="resetBtn" class="btn-timer-action secondary" title="Reset Timer">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                            <button id="skipBtn" class="btn-timer-action secondary" title="Skip Session">
+                                <i class="fa-solid fa-forward-step"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Session Configuration / Details -->
+                    <div class="timer-meta-card">
+                        <div class="meta-item">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <div>
+                                <span>Completed Today</span>
+                                <h4 id="timerCompletedCount">0 sessions</h4>
+                            </div>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-bullseye"></i>
+                            <div>
+                                <span>Daily Goal Status</span>
+                                <h4 id="timerGoalStatusText">0 / 120 mins</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: Statistics -->
+            <section id="statistics" class="content-section">
+                <div class="section-header">
+                    <h2>Performance & Statistics</h2>
+                    <p>Track your cumulative progress and productivity habits.</p>
+                </div>
+
+                <div class="stats-grid full-width-grid">
+                    <div class="stat-card-detailed">
+                        <div class="stat-card-header">
+                            <div>
+                                <h3>Total Focus Time Tracked</h3>
+                                <p>Overall time spent concentrating</p>
+                            </div>
+                            <div class="stat-icon purple"><i class="fa-solid fa-clock"></i></div>
+                        </div>
+                        <div class="stat-big-value" id="detailedTotalTime">0 hours 0 mins</div>
+                    </div>
+                    <div class="stat-card-detailed">
+                        <div class="stat-card-header">
+                            <div>
+                                <h3>Focus Sessions Finished</h3>
+                                <p>Total completed pomodoros</p>
+                            </div>
+                            <div class="stat-icon cyan"><i class="fa-solid fa-circle-check"></i></div>
+                        </div>
+                        <div class="stat-big-value" id="detailedSessionsCount">0 sessions</div>
+                    </div>
+                    <div class="stat-card-detailed">
+                        <div class="stat-card-header">
+                            <div>
+                                <h3>Personal Longest Session</h3>
+                                <p>Maximum uninterrupted focus block</p>
+                            </div>
+                            <div class="stat-icon orange"><i class="fa-solid fa-fire"></i></div>
+                        </div>
+                        <div class="stat-big-value" id="detailedLongestSession">0 mins</div>
+                    </div>
+                </div>
+
+                <div class="card reset-data-card">
+                    <div class="reset-info">
+                        <h3>Data Management</h3>
+                        <p>Reset today's tracking data or clear all completed logs and tasks stored in your local browser storage.</p>
+                    </div>
+                    <button id="resetStatsBtn" class="btn-danger"><i class="fa-solid fa-trash-can"></i> Reset Today's Stats</button>
+                </div>
+            </section>
+
+            <!-- SECTION: Settings -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <h2>Preferences & Settings</h2>
+                    <p>Customize your timers, goals, and notification behaviors.</p>
+                </div>
+
+                <div class="card settings-card">
+                    <form id="settingsForm">
+                        <div class="settings-group">
+                            <h3><i class="fa-solid fa-stopwatch"></i> Timer Durations (Minutes)</h3>
+                            <div class="settings-grid-inputs">
+                                <div class="input-field">
+                                    <label for="settingFocusTime">Focus Duration</label>
+                                    <input type="number" id="settingFocusTime" min="1" max="120" value="25" required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="settingShortBreak">Short Break</label>
+                                    <input type="number" id="settingShortBreak" min="1" max="30" value="5" required>
+                                </div>
+                                <div class="input-field">
+                                    <label for="settingLongBreak">Long Break</label>
+                                    <input type="number" id="settingLongBreak" min="1" max="60" value="15" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3><i class="fa-solid fa-bullseye"></i> Productivity Targets</h3>
+                            <div class="settings-grid-inputs">
+                                <div class="input-field full-width">
+                                    <label for="settingDailyGoal">Daily Goal (Minutes)</label>
+                                    <input type="number" id="settingDailyGoal" min="10" max="1440" value="120" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-group">
+                            <h3><i class="fa-solid fa-sliders"></i> Behavior & Toggles</h3>
+                            <div class="toggle-row">
+                                <div class="toggle-info">
+                                    <h4>Auto-start Breaks / Sessions</h4>
+                                    <p>Automatically start the countdown when switching or completing modes.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="settingAutoStart">
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-row">
+                                <div class="toggle-info">
+                                    <h4>Sound Notifications</h4>
+                                    <p>Play an alert tone when a timer session concludes.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="settingSoundEnabled" checked>
+                                    <span class="slider-round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+                            <button type="button" id="resetDefaultsBtn" class="btn-secondary">Restore Defaults</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Audio assets synthesis fallback / audio elements -->
+    <audio id="alarmAudio" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- JavaScript script -->
+    <script src="script.js"></script>
+</body>
+</html>
